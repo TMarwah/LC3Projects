@@ -1,9 +1,76 @@
 ;=================================================
-; Name: 
-; Email: 
+; Name: Tanmay Marwah
+; Email: tmarw001@ucr.edu
 ; 
 ; Lab: lab 4, ex 2
-; Lab section: 
-; TA: 
+; Lab section: 23
+; TA: Westin Montano and Omer Eren
 ; 
 ;=================================================
+
+.ORIG x3000
+
+;LOAD R1 with array starting address
+LD R1, ARRAY_PTR
+
+;LOAD loop counter
+LD R2, DEC_10
+
+;zero out R0
+AND R0, R0, x0
+
+;========================
+;LOAD ARRAY WITH VALS 0-9
+;========================
+DO_WHILE_LOOP
+    STR R0, R1, #0
+    ADD R0, R0, #1 ;load next num to be placed into array
+    ADD R1, R1, #1 ;offset mem loc to array index 1
+    ADD R2, R2, #-1 ;iterate loop
+    BRp DO_WHILE_LOOP
+END_DO_WHILE_LOOP
+
+
+;reset array mem loc
+AND R1, R1, x0
+LD R1, ARRAY_PTR
+
+;clear out r2 for use
+AND R2, R2, x0
+LD R2, ASCII_OFFSET
+
+;initialize iterator
+AND R3, R3, x0
+LD R3, DEC_10
+
+OUTPUT_LOOP
+    ;LOAD NUM, ADD OFFSET TO CONVERT TO CHAR, OUTPUT CHAR
+    LDR R0, R1, #0
+    ADD R0, R0, R2
+    OUT
+    ;CLEAR AND NEWLINE
+    AND R0, R0, x0
+    LD R0, NEWLINE
+    OUT
+    
+    AND R0, R0, x0
+    ADD R1, R1, #1 ;offset mem loc to array index 1
+    ADD R3, R3, #-1 ;iterate loop
+    BRp OUTPUT_LOOP
+END_OUTPUT_LOOP
+
+
+
+HALT
+ARRAY_PTR .FILL x4000
+DEC_10 .FILL #10
+ASCII_OFFSET .FILL x30
+NEWLINE .FILL x0A
+.END
+
+
+
+
+.ORIG x4000
+ARRAY .BLKW #10
+.END
