@@ -20,17 +20,64 @@ AND R0, R0, x0
 LD R0, ARRAY_PTR
 TRAP x22
 
+AND R0, R0, x0
+ADD R0, R0, R5
 LD R1, ARRAY_PTR
 LD R3, ARRAY_PTR
-;LD R5, SUB_IS_PALINDROME
+LD R5, SUB_IS_PALINDROME
 jsrr R5
 
+;checking if palindrome
+ADD R4, R4, #-1
+BRz IS_PALINDROME
+
+;PRINT NON PALINDROME
+AND R0, R0, x0
+LD R0, NEWLINE
+OUT
+AND R0, R0, x0
+LEA R0, THE_STRING
+TRAP x22
+
+AND R0, R0, x0
+LD R0, ARRAY_PTR
+TRAP x22
+
+AND R0, R0, x0
+LEA R0, IS_NOT_PALINDROME_MSG
+TRAP x22
+BR SKIP_PALINDROME
+
+;PRINT PALINDROME
+IS_PALINDROME
+AND R0, R0, x0
+LD R0, NEWLINE
+OUT
+AND R0, R0, x0
+LEA R0, THE_STRING
+TRAP x22
+
+AND R0, R0, x0
+LD R0, ARRAY_PTR
+TRAP x22
+
+AND R0, R0, x0
+LEA R0, IS_PALINDROME_MSG
+TRAP x22
+
+
+SKIP_PALINDROME
 halt
 
 ; your local data goes here
 SUB_GET_STRING .fill x3200
+SUB_IS_PALINDROME .fill x3300
 ARRAY_PTR .fill x4000
 top_stack_addr .fill xFE00 ; DO NOT MODIFY THIS LINE OF CODE
+THE_STRING .STRINGZ "The string "
+IS_PALINDROME_MSG .STRINGZ " IS a palindrome"
+IS_NOT_PALINDROME_MSG .STRINGZ " IS NOT a palindrome"
+NEWLINE .fill x0A
 .end
 
 .ORIG x4000
@@ -96,37 +143,46 @@ RET
     ADD R6, R6, #-1
     STR R5, R6, #0
     
+    ;set addresses, char count
+    AND R5, R5, x0
+    ADD R5, R5, R0
+    ADD R5, R5, #-1
+    
+    ;load vals
     LDR R2, R1, #0
     ADD R3, R3, R5
     LDR R0, R3, #0
     
     
     CHECK_PALINDROME
-        NOT R2, R2
+        NOT R0, R0 ;take complement
+        ADD R0, R0, 1
         ADD R4, R2, R0
-        BRnp NOT_PALI ; break if subtraction !=0 aka not same char
-        
+        BRp NOT_PALI ; break if subtraction !=0 aka not same char
+        BRn NOT_PALI
+        NOT R1, R1
+        ADD R4, R3, R1 ;check if addresses are equal
+        BRn FINISHED_CHECK
+        NOT R1, R1 ; reset address
         ADD R1, R1, #1 ;change addresses
         ADD R3, R3, #-1 ;change addresses
         LDR R2, R1, #0
         LDR R0, R3, #0
-        NOT R1,R1
-        ADD R4, R1, R3
-        BRnz FINISHED_CHECK
+        BRp CHECK_PALINDROME
     
     
     
     NOT_PALI
     AND R4, R4, x0
-    ADD R4, R4, #1
-    BRp DONE
+    BRz DONE
 
     FINISHED_CHECK
     AND R4, R4, x0
-
-
-
-
+    ADD R4, R4, #1
 DONE
+
+RET
+
+
 
 .end
