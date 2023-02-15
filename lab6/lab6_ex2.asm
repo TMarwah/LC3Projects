@@ -39,13 +39,6 @@ LEA R2, VALUES
     JSRR R0
     ADD R0, R0, #0
     BRp STACK_POPPER
-
-
-
-
-
-
-
 HALT
 BASE .fill xA000
 MAX .fill xA005
@@ -59,9 +52,6 @@ VALUES .fill #1
        .fill #4
        .fill #5
        .fill #6 ;will not get pushed due to overflow
-
-
-
 .END
 
 ;------------------------------------------------------------------------------------------
@@ -187,11 +177,6 @@ NULL_PUSH .fill #0
     LDR R7, R6, #0
     ADD R6, R6, #1
     
-    
-        
-        
-        
-
 RET
 UNDERFLOW_MESSAGE .STRINGZ "Underflow occured"
 NULL_POP .fill #0
