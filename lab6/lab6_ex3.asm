@@ -89,7 +89,11 @@ JSRR R0
 LD R0, SUB_RPN_ADDITION
 JSRR R0
 
+LD R0, SUB_STACK_POP
+JSRR R0
 
+LD R2, SUB_CHAR_CONVERT
+JSRR R2
 
 HALT
 BASE .fill xA000
@@ -99,6 +103,7 @@ REGISTER_STORE_STACK .fill xFE00
 SUB_STACK_PUSH .fill x3200
 SUB_STACK_POP .fill x3400
 SUB_RPN_ADDITION .fill x3600
+SUB_CHAR_CONVERT .fill x3800
 VALUES .fill #1
        .fill #2
        .fill #3
@@ -268,6 +273,8 @@ NULL_POP .fill #0
     STR R4, R6, #0
     ADD R6, R6, #-1
     STR R2, R6, #0
+    ADD R6, R6, #-1
+    STR R5, R6, #0
 
     AND R1, R1, x0 ;clear for addition
     
@@ -286,6 +293,8 @@ NULL_POP .fill #0
     JSRR R0
 
     ;RETURN REGISTERS FROM REG_STORE_STACK
+    LDR R5, R6, #0
+    ADD R6, R6, #1
     LDR R2, R6, #0
     ADD R6, R6, #1
     LDR R4, R6, #0
@@ -306,4 +315,52 @@ SUB_STACK_POP_PTR_3400 .fill x3400
 
 
 
+.END
+;------------------------------------------------------------------------------------------
+; Subroutine: SUB_CHAR_CONVERT
+; Parameter (R0): Value popped off stack
+; Postcondition: The subroutine has popped off the top values of the stack,
+;		    converts to char, and printed the resulting value back
+;		    onto the stack.
+; Return Value: console output
+;------------------------------------------------------------------------------------------
+.ORIG x3800
+    ;STORE REGISTERS INTO REG_STORE_STACK
+    ADD R6, R6, #-1
+    STR R7, R6, #0
+    ADD R6, R6, #-1
+    STR R3, R6, #0
+    ADD R6, R6, #-1
+    STR R4, R6, #0
+    ADD R6, R6, #-1
+    STR R2, R6, #0
+    ADD R6, R6, #-1
+    STR R5, R6, #0
+    
+    LD R0, NEWLINE_3800
+    OUT 
+    
+    LD R2, SUB_STACK_POP_PTR_3400_INTERNAL
+    JSRR R2
+    
+    LD R2, ASCII_CONV_CHAR
+    ADD R0, R0, R2
+    OUT
+
+    ;RETURN REGISTERS FROM REG_STORE_STACK
+    LDR R5, R6, #0
+    ADD R6, R6, #1
+    LDR R2, R6, #0
+    ADD R6, R6, #1
+    LDR R4, R6, #0
+    ADD R6, R6, #1
+    LDR R3, R6, #0
+    ADD R6, R6, #1
+    LDR R7, R6, #0
+    ADD R6, R6, #1
+
+RET
+SUB_STACK_POP_PTR_3400_INTERNAL .FILL x3400
+ASCII_CONV_CHAR .fill x30
+NEWLINE_3800 .fill x0A
 .END
