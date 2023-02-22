@@ -108,3 +108,28 @@ RET
 BACKUP_R1_3400  .BLKW #1
 BACKUP_R2_3400  .BLKW #1
 .END
+
+
+
+;Q1. Running the code initializes R1 to 5 and then calls the SUB_FACT subroutine
+;    The SR subtracts 1 from R1, then calls the routine from within itself,
+;    causing a loop, then once R1 equals 0, the BASE_3200 branch is taken,
+;    which adds 1 to R0, then restores R1 to 1. Since R7 is not backed up,
+;    the subroutine is taken infinitely
+
+;Q2. R0 contains a 0 while R1 contains a 5
+ 
+;Q3. R0 contains a 0 while R1 contains a 4  
+;    
+;Q4. R0     R1
+;    -----------
+;    0   |   3
+;    0   |   2 
+;    0   |   1
+;    0   |   0
+
+;Q5. Before executing RET, R7 has a value of x3206, (address after JSR)
+
+;Q6. R7 has the value of x320A, which contains the BR RESTORE_3200 instruction
+
+;Possible solution: Back up R7 to return into main rather than within the prog
