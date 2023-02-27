@@ -41,9 +41,6 @@ STR R2, R5, #0
 ADD R5, R5, #-1
 STR R1, R5, #0
 
-
-
-
 ; Subroutine Logic
 
 ADD R1, R1, #-1
@@ -129,3 +126,5 @@ RET
 ;Q2. 120
  
 ;Q3. Yes it is correct
+
+;RETURN STACK IS CALLED MULTIPLE TIMES UNTIL MAIN RETURN IS REACHED
