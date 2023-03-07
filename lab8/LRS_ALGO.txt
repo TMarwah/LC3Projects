@@ -1,0 +1,26 @@
+Essentially I would implement a series of 15 left shifts where I take the MSB and add it to the resulting number to "store" the bit 
+Once the loop completes all the bits should be one position to the right of where they originally were, leaving the LSB of the original number to be gone
+
+
+ex
+1001 1001 1001 1001
+STORE MSB
+SHIFT LEFT
+ADD NEW BIT
+
+0011 0011 0011 0011
+STORE MSB
+SHIFT LEFT
+ADD NEW BIT
+
+0110 0110 0110 0110
+STORE MSB
+SHIFT LEFT
+ADD NEW BIT
+
+1100 1100 1100 1100
+
+ETC...
+UNTIL
+
+0100 1100 1100 1100
