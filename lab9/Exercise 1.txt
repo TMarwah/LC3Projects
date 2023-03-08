@@ -1,0 +1,74 @@
+ex1q1:
+10 lines of assembly are generated for the c code
+
+ex1q2:
+.LC0
+main
+
+ex1q3:
+12 lines of assembly are generated for the c code
+
+ex1q4:
+Yes, I see a printf call in line 9
+
+ex1q5:
+    .LC0:
+            .string "Hello, world! %d \n"
+    main:
+            push    rbp
+            mov     rbp, rsp
+            mov     esi, 10
+            mov     edi, OFFSET FLAT:.LC0
+            mov     eax, 0
+            call    printf
+            mov     eax, 0
+            pop     rbp
+            ret
+
+ex1q6:
+    .LC0:
+            .string "Hello, world! %d \n"
+    main:
+            sub     rsp, 8
+            mov     esi, 10
+            mov     edi, OFFSET FLAT:.LC0
+            mov     eax, 0
+            call    printf
+            mov     eax, 0
+            add     rsp, 8
+            ret
+
+ex1q7:
+11 lines of code are generated with the -O1 compiler option
+
+ex1q8:
+    .LC0:
+            .string "Hello, world! %d \n"
+    main:
+            sub     rsp, 8
+            mov     esi, 10
+            mov     edi, OFFSET FLAT:.LC0
+            xor     eax, eax
+            call    printf
+            xor     eax, eax
+            add     rsp, 8
+            ret   
+
+ex1q9:
+The "mov eax, 0" lines are replaced with xor
+
+ex1q10:
+    .LC0:
+            .string "Hello, world! %d \n"
+    main:
+            sub     rsp, 8
+            mov     esi, 10
+            mov     edi, OFFSET FLAT:.LC0
+            xor     eax, eax
+            call    printf
+            xor     eax, eax
+            add     rsp, 8
+            ret
+
+ex1q11:
+There is no difference
