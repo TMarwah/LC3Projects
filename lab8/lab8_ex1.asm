@@ -69,7 +69,7 @@ ADD R6, R6, #1
 RET
 
 ;hardcoded value
-VAL_TO_CONVERT .fill #32767
+VAL_TO_CONVERT .fill #-107
 .end
 
 ;=================================================
@@ -96,6 +96,8 @@ ADD R1, R1, #0
 BRp PRINT_POSITIVE
 LD R0, MINUS_SIGN
 OUT
+NOT R1, R1
+ADD R1, R1, #1
 BR SKIP_POSITIVE
 
 PRINT_POSITIVE
@@ -184,10 +186,30 @@ ADD R0, R0, R4
 OUT
 
 ;PRINT ONES
+AND R3, R3, x0
+AND R2, R2, x0
+COUNT_ONES
+    LD R2, ones
+    ADD R1, R1, R2
+    BRn ONES_DONE
+    ADD R3, R3, #1
+    BR COUNT_ONES
+
+ONES_DONE
+NOT R2, R2
+ADD R2, R2, #1
+ADD R1, R2, R1
+
 AND R0, R0, x0
-ADD R0, R1, #0
+ADD R0, R3, #0
 ADD R0, R0, R4
+
 OUT
+
+;AND R0, R0, x0
+;ADD R0, R1, #0
+;ADD R0, R0, R4
+;OUT
 
 ; Restore registers
 LDR R2, R6, #0
