@@ -1,0 +1,27 @@
+ex3q1:
+There is one call to the puts Subroutine
+
+ex3q2:
+Yes, the call is only written once, but using
+JMP allows for the loop to happen
+
+ex3q3:
+Now puts is called 3 times
+
+ex3q4:
+No
+
+ex3q5:
+I see 5 calls
+
+ex3q6:
+When the value is 6 the loop stops being unrolled
+
+ex3q7:
+Half is unrolled (10 puts calls), 
+then the whole thing is recalled
+
+The puts subroutine is now called 10 times
+
+There is a jump instruction present in the new code
+
